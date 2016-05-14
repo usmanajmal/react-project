@@ -13,15 +13,22 @@ var Hello = React.createClass({
   mixins: [ ReactFire ],    
   getInitialState: function () {
   	return {
-  		items: {}
+  		items: {},
+  		loaded: false
   	}
   },
+  /**
+   *
+   */
   componentWillMount: function() {
   	// Create a new instance of Firebase which will look for its data in <rootUrl>/items
   	// bindAsObject: This isn't a React object. Its is ab object given by ReactFire which
   	// is a bridge between firebase and out components. In order to add this object (as 
   	// it doesn't exist in React) we can use 'mixins', which is used above
-  	this.bindAsObject(new Firebase(rootUrl + 'items/'), 'items');
+  	var fb = new Firebase(rootUrl + 'items/');
+  	this.bindAsObject(fb, 'items');
+
+  	fb.on('value', this.handleDataLoaded);
   },
   render: function() {
 
@@ -37,9 +44,17 @@ var Hello = React.createClass({
     			To-Do List
     		</h2>
     		<Header itemsStore={this.firebaseRefs.items} />
-    		<List items={this.state.items} />
+    		<div className={"content " + (this.state.loaded ? 'loaded': '')}>
+    			<List items={this.state.items} />
+    		</div>
     	</div>
     </div>
+  },
+  /**
+   * Event handler for performing operations after data is loaded from firebase
+   */ 
+  handleDataLoaded: function () {
+  	this.setState({loaded: true});
   }
 });
 
