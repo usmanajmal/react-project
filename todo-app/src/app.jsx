@@ -25,10 +25,10 @@ var Hello = React.createClass({
   	// bindAsObject: This isn't a React object. Its is ab object given by ReactFire which
   	// is a bridge between firebase and out components. In order to add this object (as 
   	// it doesn't exist in React) we can use 'mixins', which is used above
-  	var fb = new Firebase(rootUrl + 'items/');
-  	this.bindAsObject(fb, 'items');
+  	this.fb = new Firebase(rootUrl + 'items/');
+  	this.bindAsObject(this.fb, 'items');
 
-  	fb.on('value', this.handleDataLoaded);
+  	this.fb.on('value', this.handleDataLoaded);
   },
   render: function() {
 
@@ -47,9 +47,35 @@ var Hello = React.createClass({
     		<hr />
     		<div className={"content " + (this.state.loaded ? 'loaded': '')}>
     			<List items={this.state.items} />
+    			{this.deleteButton()}
     		</div>
     	</div>
     </div>
+  },
+  deleteButton: function() {
+  	if (!this.state.loaded) {
+  		return;
+  	} else {
+	  	return <div className="text-center clear-complete">
+	  		<hr />
+	  		<button
+	  			onClick={this.onDeleteDoneClick} 
+	  			className="btn btn-default"
+	  		>
+	  		Clear Complete
+	  		</button>
+	  	</div>
+	}
+  },
+  /**
+   * Loop over all todos and clear out all done items
+   */
+  onDeleteDoneClick: function () {
+  	for (var key in this.state.items) {
+  		if (this.state.items[key].done === true) {
+  			this.fb.child(key).remove();   // 'child' will select a particular element
+  		}
+  	}
   },
   /**
    * Event handler for performing operations after data is loaded from firebase

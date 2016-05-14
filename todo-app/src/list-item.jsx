@@ -7,7 +7,8 @@ module.exports = React.createClass({
 	getInitialState: function () {
 		return {
 			text: this.props.item.text,
-			done: this.props.item.done
+			done: this.props.item.done,
+			textChange: false
 		};
 	},
 	/**
@@ -19,7 +20,7 @@ module.exports = React.createClass({
 	render: function () {
 		return <div className="input-group">
 			<span className="input-group-addon">
-				<input
+				<input 
 					checked={this.state.done} 
 					onChange={this.handleDoneChange} /* This made
 					checkbox a controlled form object which means
@@ -28,16 +29,69 @@ module.exports = React.createClass({
 				/>
 			</span>
 			<input type="text"
+				disabled={this.state.done} /* Disable the input box when 
+				the todo is done */
 				className="form-control"
 				value={this.state.text} /* Controlled form 
 				control which means we need an initial state */
+				onChange={this.handleTextChange}
 			/>
 			<span className="input-group-btn">
-				<button className="btn btn-default">
+				{this.changesButtons()}
+				<button
+					onClick={this.handleDeleteClick} 
+					className="btn btn-default"
+				>
 				Delete
 				</button>
 			</span>
 		</div>
+	},
+	/**
+	 *
+	 */
+	changesButtons: function () {
+		if (!this.state.textChanged) {
+			return null;
+		}
+		return [
+			<button 
+				onClick={this.handleSaveClick}
+				className="btn btn-default"
+			>
+			Save
+			</button>,
+			
+			<button 
+				onClick={this.handleUndoClick}
+				className="btn btn-default"
+			>
+			Undo
+			</button>
+		]
+	},
+	handleSaveClick: function () {
+		this.fb.update({
+			text: this.state.text, // The new text. this.props.text refers to currently set text of FireBase
+		});
+		this.setState({
+			textChanged: false
+		});
+	},
+	handleUndoClick: function() {
+		this.setState({
+			text: this.props.item.text,
+			textChanged: false
+		});
+	},
+	/**
+	 *	Handler for making input boxes of alerts able to change text
+	 */
+	handleTextChange: function(event) {
+		this.setState({
+			text: event.target.value,
+			textChanged: true
+		})
 	},
 	/**
 	 * Handler for changing state of a todo
@@ -46,5 +100,11 @@ module.exports = React.createClass({
 		var update = {done: event.target.checked};
 		this.setState(update);
 		this.fb.update(update); 
+	},
+	/**
+	 * Handler for deletion of a todo
+	 */
+	handleDeleteClick: function() {
+		this.fb.remove();
 	}
 });

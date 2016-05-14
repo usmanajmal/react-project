@@ -1,6 +1,10 @@
+
+.panel-default {
+	padding: 60px;
+}
+
 .content {
-    opacity: 0;
-    
+    opacity: 0;    
 }
 .loaded {
 	opacity: 1;
@@ -8,5 +12,9 @@
 }
 
 .input-group {
+	margin-bottom: 15px;
+}
+
+.clear-complete {
 	margin-bottom: 15px;
 }

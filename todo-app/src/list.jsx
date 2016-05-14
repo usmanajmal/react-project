@@ -12,7 +12,7 @@ module.exports = React.createClass({
 	 *	Helper method for rendering the list
 	 */
 	renderList: function () {
-		if (this.props.items && Object.keys(this.props.items).length === 0) {
+		if (!this.props.items) {
 			return <h4>
 				Add a To-Do to get started!
 			</h4>
