@@ -9,7 +9,7 @@ var rootUrl = 'https://sweltering-heat-4125.firebaseio.com/';
 
 
 var Hello = React.createClass({
-  // Any methods which React Fire has, literally copy them over to React
+  // Mixins: Any methods which React Fire has, literally copy them over to React
   mixins: [ ReactFire ],    
   getInitialState: function () {
   	return {
@@ -18,7 +18,12 @@ var Hello = React.createClass({
   	}
   },
   /**
+   * Taken from ReactJS documentation:
+   * "Invoked once, both on the client and server, immediately before the initial rendering occurs.
+   * If you call setState within this method, render() will see the updated state and will be executed
+   * only once despite the state change."
    *
+   * Use this function to instantiate instance for interacting with Firebase
    */
   componentWillMount: function() {
   	// Create a new instance of Firebase which will look for its data in <rootUrl>/items
@@ -52,6 +57,10 @@ var Hello = React.createClass({
     	</div>
     </div>
   },
+  /**
+   * Add HTML for delete button
+   * return {html} HTML code for the delet button
+   */
   deleteButton: function() {
   	if (!this.state.loaded) {
   		return;
@@ -68,7 +77,8 @@ var Hello = React.createClass({
 	}
   },
   /**
-   * Loop over all todos and clear out all done items
+   * Click handler for delete button. Loop over all todos and clear out all done items
+   * return {undefined}
    */
   onDeleteDoneClick: function () {
   	for (var key in this.state.items) {
@@ -85,5 +95,6 @@ var Hello = React.createClass({
   }
 });
 
+// TODO: Add explanation of following
 var element = React.createElement(Hello, {});
 ReactDOM.render(element, document.querySelector('.container'));

@@ -12,7 +12,15 @@ module.exports = React.createClass({
 		};
 	},
 	/**
-	 *	List item should be able to update itself form done: false to done: true
+	 *	
+	 */
+	/**
+	 * Taken from ReactJS documentation:
+	 * "Invoked once, both on the client and server, immediately before the initial rendering occurs.
+	 * If you call setState within this method, render() will see the updated state and will be executed
+	 * only once despite the state change."
+	 *
+	 * List item should be able to update itself form done: false to done: true
 	 */
 	componentWillMount: function () {
 		this.fb = new Firebase(rootUrl + 'items/' + this.props.item.key);
@@ -23,7 +31,7 @@ module.exports = React.createClass({
 				<input 
 					checked={this.state.done} 
 					onChange={this.handleDoneChange} /* This made
-					checkbox a controlled form object which means
+					checkbox a controlled form object which means  
 					it value will be available via this.state */
 					type="checkbox" 
 				/>
@@ -48,7 +56,8 @@ module.exports = React.createClass({
 		</div>
 	},
 	/**
-	 *
+	 * Show buttons for "Save" and "Undo" when someone changes text of input box
+	 * return {html} HTML for buttons
 	 */
 	changesButtons: function () {
 		if (!this.state.textChanged) {
@@ -70,6 +79,10 @@ module.exports = React.createClass({
 			</button>
 		]
 	},
+	/**
+	 * Click handler for Save button
+	 * return {undefined}
+	 */
 	handleSaveClick: function () {
 		this.fb.update({
 			text: this.state.text, // The new text. this.props.text refers to currently set text of FireBase
@@ -78,6 +91,10 @@ module.exports = React.createClass({
 			textChanged: false
 		});
 	},
+	/**
+	 * Click handler for Undo button to remove any change user add to a todo
+	 * return {undefined}
+	 */
 	handleUndoClick: function() {
 		this.setState({
 			text: this.props.item.text,
@@ -85,7 +102,8 @@ module.exports = React.createClass({
 		});
 	},
 	/**
-	 *	Handler for making input boxes of alerts able to change text
+	 * Handler for making input boxes of alerts able to change text
+	 * return {undefined}
 	 */
 	handleTextChange: function(event) {
 		this.setState({
@@ -95,6 +113,7 @@ module.exports = React.createClass({
 	},
 	/**
 	 * Handler for changing state of a todo
+	 * return {undefined}
 	 */
 	handleDoneChange: function(event) {
 		var update = {done: event.target.checked};
@@ -103,6 +122,7 @@ module.exports = React.createClass({
 	},
 	/**
 	 * Handler for deletion of a todo
+	 * return {undefined}
 	 */
 	handleDeleteClick: function() {
 		this.fb.remove();

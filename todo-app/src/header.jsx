@@ -3,7 +3,7 @@ var React = require('react');
 module.exports = React.createClass({
 	// Refer to form element as controlled or un-controlled format
 	// Controlled: Tie to this.state
-	// Uncontrolled: ?
+	// Uncontrolled: TODO: Add explanation of Un-controlled format here!
 	getInitialState: function () {
 		return {
 			text: ''
@@ -25,6 +25,12 @@ module.exports = React.createClass({
 			</span>
 		</div>	
 	},
+	/**
+	 *	Click handler for "Add" button. Add new todo to Firebase
+	 *  using function "push".
+	 *  TODO: What was itemsStore? How is "push" function allowed by it
+	 *  return {undefined}
+	 */
 	handleClick: function () {
 		this.props.itemsStore.push({ // Push is for creating a new object in remote DB
 			text: this.state.text,
@@ -32,6 +38,11 @@ module.exports = React.createClass({
 		}); 
 		this.setState({text: ""});
 	}, 
+	/**
+	 * Handler for changing text of input box. Use setState to change the text of input
+	 * box when someone writes to it
+	 * return {undefined}
+	 */
 	handleInputChange: function (event) {
 		this.setState({text: event.target.value});
 	}

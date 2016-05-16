@@ -10,6 +10,7 @@ module.exports = React.createClass({
 	},
 	/**
 	 *	Helper method for rendering the list
+	 *  return {array} Array of items of list
 	 */
 	renderList: function () {
 		if (!this.props.items) {
