@@ -42,6 +42,9 @@ module.exports = React.createClass({
 			</li>
 		});
 	},
+	/**
+	 * Change state with (possibly updated) topics, so re-render of the component is triggered
+	 */
 	onChange: function(event, topics) {
 		this.setState({topics: topics}); // This will call renderTopic to render the topics
 	}
