@@ -11,6 +11,11 @@ module.exports = Reflux.createStore({
 			.then(function(json) {
 				// Store retrieved data
 				this.topics = json.data;
+
+				this.triggerChange();
 			}.bind(this));
+	},
+	triggerChange: function() {
+		this.trigger('change', this.topics);
 	}
 });

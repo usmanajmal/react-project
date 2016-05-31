@@ -1,8 +1,13 @@
 var React = require('react');
-// var Api = require('../utils/api'); Use topic store instead to make the API call
-var TopicStore = require('../stores/topic-store')
+var TopicStore = require('../stores/topic-store');
+var Reflux = require('reflux');
 
 module.exports = React.createClass({
+	// This component need to listen to any event triggered by TopicStore
+	// When it happens, run onChange function defined here in this component
+	mixins: [
+		Reflux.listenTo(TopicStore, 'onChange')
+	],
 	/**
 	 * Default initial state
 	 */
@@ -12,28 +17,10 @@ module.exports = React.createClass({
 		};
 	},
 	/**
-	 * Runs right before a component is rendered
+	 * Runs right before a component is rendered and it runs only once
 	 */
 	componentWillMount: function () {
-		/* Not a good idea to fetch data at this point. Instead
-		we will use a store, we will call Topic Store
-		Api.get('topics/defaults')
-			.then(function(data) {
-				//console.log(response.data);
-				this.setState({
-					topics: data.data
-				});
-			}.bind(this));*/
-
-		TopicStore.getTopics()
-			.then(function() {
-				// We have successfully fetched topics
-				// topics are now available on TopicStore.topics
-
-				this.setState({
-					topics: TopicStore.topics
-				});
-			}.bind(this));
+		TopicStore.getTopics();
  	},
  	/**
 	 * Render topic list
@@ -53,5 +40,8 @@ module.exports = React.createClass({
 				{topic.id} {topic.name} {topic.description}
 			</li>
 		});
+	},
+	onChange: function(event, topics) {
+		this.setState({topics: topics}); // This will call renderTopic to render the topics
 	}
 });
