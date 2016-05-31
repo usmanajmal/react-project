@@ -1,8 +1,10 @@
 var Api = require('../utils/api');
 var Reflux = require('reflux');
+var Actions = require('../actions');
 
 // Create store using Reflux using some config options
 module.exports = Reflux.createStore({
+	listenables: [Actions],
 	/**
 	 * Get topics using Imgur's API
 	 */

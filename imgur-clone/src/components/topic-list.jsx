@@ -1,6 +1,7 @@
 var React = require('react');
-var TopicStore = require('../stores/topic-store');
 var Reflux = require('reflux');
+var TopicStore = require('../stores/topic-store');
+var Actions = require('../actions');
 
 module.exports = React.createClass({
 	// This component need to listen to any event triggered by TopicStore
@@ -20,7 +21,7 @@ module.exports = React.createClass({
 	 * Runs right before a component is rendered and it runs only once
 	 */
 	componentWillMount: function () {
-		TopicStore.getTopics();
+		Actions.getTopics();
  	},
  	/**
 	 * Render topic list
