@@ -16,6 +16,7 @@ module.exports = React.createClass({
             onMouseLeave={this.handleMouseLeave}
             >
 			{this.props.animated && this.state.hovering ? this.video() : this.image()}
+            {this.props.animated && !this.state.hovering ? this.icon() : null}
 		</div>
 	},
     /**
@@ -34,6 +35,9 @@ module.exports = React.createClass({
                 <source src={this.props.mp4} type='video/mp4'></source>
             </video>
         </div>
+    },
+    icon: function () {
+        return <span className="glyphicon glyphicon-play"></span>;
     },
     /**
      *
