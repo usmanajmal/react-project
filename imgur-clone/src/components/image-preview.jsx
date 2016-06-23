@@ -1,4 +1,6 @@
 var React = require('react');
+var ReactRouter = require('react-router');
+var Link = ReactRouter.Link;
 
 module.exports = React.createClass({
     getInitialState: function () {
@@ -10,7 +12,8 @@ module.exports = React.createClass({
      * Render component image-preview
      */
 	render: function () {
-		return <div
+		return <Link
+            to={"images/" + this.props.id}
             className="image-preview"
             onMouseEnter={this.handleMouseEnter}
             onMouseLeave={this.handleMouseLeave}
@@ -18,7 +21,7 @@ module.exports = React.createClass({
 			{this.props.animated && this.state.hovering ? this.video() : this.image()}
             {this.props.animated && !this.state.hovering ? this.icon() : null}
             {this.state.hovering ? this.inset() : null}
-		</div>
+		</Link>
 	},
     inset: function() {
         return <div className="inset">
